@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Model;
 
-class Attribute extends Model {
+class Attribute extends BaseAttribute
+{
     protected $table = 'attributes';
 
-    public function product() {
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 }
