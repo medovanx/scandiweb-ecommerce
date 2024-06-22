@@ -1,11 +1,19 @@
 import './Navbar.css'
 import { BsCart2 } from "react-icons/bs";
-import Button from '../Button/Button';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import CartOverlay from '../CartOverlay/CartOverlay';
+import { useCartContext } from '../../context/CartContext';
 
 const Navbar = () => {
-    const [cartCount] = useState(0); // Initialize cart count state
+    const { cartCount } = useCartContext(); // Destructure cartCount from the context
+    const [cartOpen, setCartOpen] = useState(false); // State to manage cart overlay
+
+    const toggleCart = () => {
+        console.log('Cart is now:', cartOpen ? 'open' : 'closed');
+        setCartOpen(!cartOpen);
+    };
+
     return (
         <header>
             <div className="header-items">
@@ -36,10 +44,11 @@ const Navbar = () => {
                         </li>
                     </ul>
                 </nav>
-                <div className="cart-icon">
-                    <Button data-testid='cart-btn'><BsCart2 size={20} /></Button>
+                <div className="cart-icon" onClick={toggleCart}>
+                    <span data-testid='cart-btn'><BsCart2 size={30} /></span>
                     {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
                 </div>
+                <CartOverlay isOpen={cartOpen} onClose={toggleCart} />
             </div>
         </header>
     )
