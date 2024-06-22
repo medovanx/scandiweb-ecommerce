@@ -57,7 +57,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                                         key={`${name}-${idx}`}
                                         style={{ backgroundColor: attr.value }}
                                         className={`color-attribute ${attr.selected ? 'selected' : ''}`}
-                                        
+
                                     ></span>
                                 ))
                         ) : (
@@ -108,7 +108,12 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                         ))}
                     </ul>
                     <p className="total-price">Total: ${cartItems.reduce((acc, item) => acc + item.totalPrice, 0).toFixed(2)}</p>
-                    <button className="checkout-btn">Checkout</button>
+                    <button
+                        className={`checkout-btn ${cartCount === 0 ? 'disabled' : ''}`}
+                        disabled={cartCount === 0}
+                    >
+                        Checkout
+                    </button>
                 </div>
             </div>
         </div>

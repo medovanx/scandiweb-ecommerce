@@ -78,6 +78,12 @@
     background-color: #218838;
 }
 
+.checkout-btn.disabled {
+    background-color: grey;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
 .item-info {
     display: flex;
     align-items: center;
