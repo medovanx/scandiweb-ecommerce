@@ -45,6 +45,8 @@ class GraphQL
                 ],
             ]);
 
+            // MutationType in GraphQL class
+
             $mutationType = new ObjectType([
                 'name' => 'Mutation',
                 'fields' => [
@@ -60,6 +62,7 @@ class GraphQL
                         'args' => [
                             'productId' => ['type' => Type::nonNull(Type::id())],
                             'quantity' => ['type' => Type::nonNull(Type::int())],
+                            'attributes' => ['type' => Type::string()], // Adjust the type based on how you handle attributes
                         ],
                         'resolve' => function ($root, $args) {
                             return \App\GraphQL\Resolvers\OrderResolver::createOrder($args);
@@ -67,6 +70,7 @@ class GraphQL
                     ],
                 ],
             ]);
+
 
             $schema = new Schema(
                 (new SchemaConfig())
