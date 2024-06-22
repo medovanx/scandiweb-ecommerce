@@ -10,6 +10,8 @@
     justify-content: space-between;
     gap: 10px;
     overflow: hidden;
+    min-height: 370px;
+    max-height: 370px;
 }
 
 .product-image {
