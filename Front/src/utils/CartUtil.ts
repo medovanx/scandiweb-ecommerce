@@ -13,9 +13,11 @@ export function addToCart(
     product: Product,
     cartItems: CartItem[],
     setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>,
-    selectedAttributes?: { id: string; name: string; value: string }[]
+    selectedAttributes?: {
+        selected: any; id: string; name: string; value: string
+    }[]
 ): void {
-    const attributesToUse = selectedAttributes || getFirstAttributes(product.attributes);
+    const attributesToUse = selectedAttributes ? getSelectedAttributes(product.attributes, selectedAttributes) : getFirstAttributes(product.attributes);
 
     // Create a map to store selected attribute values
     const selectedAttributeMap: { [name: string]: string } = {};
@@ -26,14 +28,10 @@ export function addToCart(
     // Create the identifier with selected attributes
     const identifierParts = [product.id];
     attributesToUse.forEach(attr => {
-        if (selectedAttributeMap[attr.name]) {
-            // check if the part isn't already in the identifier
-            if (!identifierParts.includes(`${attr.name}:${attr.value}`)) {
-                identifierParts.push(`${attr.name}:${attr.value}`);
-            }
+        if (attr.selected) {
+            identifierParts.push(`${attr.name}:${attr.value}`);
         }
     });
-
     const identifier = identifierParts.join('|');
 
     const existingItem = cartItems.find(item => item.id === identifier);
@@ -54,13 +52,11 @@ export function addToCart(
             price: product.prices[0]?.amount || 0,
             totalPrice: product.prices[0]?.amount || 0,
             attributes: selectedAttributes ?
-                product.attributes.map(attr => ({
-                    ...attr,
-                    selected: attributesToUse.some(selectedAttr => selectedAttr.name === attr.name && selectedAttr.value === attr.value)
-                })) :
-                attributesToUse.map(attr => ({
-                    ...attr,
-                })),
+                product.attributes.map(attr => {
+                    const selected = selectedAttributes.some(selectedAttr => selectedAttr.name === attr.name && selectedAttr.value === attr.value);
+                    return { ...attr, selected };
+                }) :
+                getFirstAttributes(product.attributes),
 
             // Rest of the properties
             image: product.images[0]?.url
@@ -70,6 +66,12 @@ export function addToCart(
 
         setCartItems([...cartItems, newCartItem]);
     }
+}
+export function getSelectedAttributes(attributes: { id: string; name: string; value: string }[], selectedAttributes: { id: string; name: string; value: string }[]): { id: string; name: string; value: string, selected: boolean }[] {
+    return attributes.map(attr => {
+        const selected = selectedAttributes.some(selectedAttr => selectedAttr.name === attr.name && selectedAttr.value === attr.value);
+        return { ...attr, selected };
+    });
 }
 
 export function getFirstAttributes(attributes: { id: string; name: string; value: string }[]): { id: string; name: string; value: string, selected: boolean }[] {
