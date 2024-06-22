@@ -60,4 +60,29 @@ class ProductResolver
             throw $e;
         }
     }
+    public static function getAllProducts()
+    {
+        try {
+            // Fetch all products without filtering by category
+            $products = Product::with(['category', 'images', 'attributes', 'prices'])->get();
+
+            // Map attributes for each product
+            $products->each(function ($product) {
+                $product->attributes = $product->attributes->map(function ($attribute) {
+                    return [
+                        'id' => $attribute->id,
+                        'name' => $attribute->attribute_name,
+                        'value' => $attribute->attribute_value,
+                    ];
+                })->toArray();
+            });
+
+            return $products;
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            error_log($e->getTraceAsString());
+            throw $e;
+        }
+    }
+
 }

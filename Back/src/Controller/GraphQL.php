@@ -33,7 +33,13 @@ class GraphQL
                             'categoryName' => ['type' => Type::string()],
                         ],
                         'resolve' => function ($root, $args, $context, $info) {
-                            return \App\GraphQL\Resolvers\ProductResolver::productsByCategory($root, $args, $context, $info);
+                            if ($args['categoryName'] === 'all') {
+                                // Return all products
+                                return \App\GraphQL\Resolvers\ProductResolver::getAllProducts();
+                            } else {
+                                // Return products filtered by category
+                                return \App\GraphQL\Resolvers\ProductResolver::productsByCategory($root, $args, $context, $info);
+                            }
                         },
                     ],
                 ],
