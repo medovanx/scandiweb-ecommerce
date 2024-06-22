@@ -1,9 +1,10 @@
-import './Navbar.css'
+import './Navbar.css';
 import { BsCart2 } from "react-icons/bs";
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import CartOverlay from '../CartOverlay/CartOverlay';
 import { useCartContext } from '../../context/CartContext';
+import CustomLink from '../CustomLink/CustomLink';
+
 
 const Navbar = () => {
     const { cartCount } = useCartContext(); // Destructure cartCount from the context
@@ -19,28 +20,14 @@ const Navbar = () => {
             <div className="header-items">
                 <nav>
                     <ul>
-                        <li data-testid='category-link'><NavLink
-                            to="/all"
-                            className={({ isActive }) => isActive ? "active-link" : ""}
-                        >
-                            All
-                        </NavLink>
+                        <li key="all" data-testid='all-link'>
+                            <CustomLink to="/all">All</CustomLink>
                         </li>
-                        <li data-testid='category-link'>
-                            <NavLink
-                                to="/clothes"
-                                className={({ isActive }) => isActive ? "active-link" : ""}
-                            >
-                                Clothes
-                            </NavLink>
+                        <li key="clothes" data-testid='clothes-link'>
+                            <CustomLink to="/clothes">Clothes</CustomLink>
                         </li>
-                        <li data-testid='category-link'>
-                            <NavLink
-                                to="/tech"
-                                className={({ isActive }) => isActive ? "active-link" : ""}
-                            >
-                                Tech
-                            </NavLink>
+                        <li key="tech" data-testid='tech-link'>
+                            <CustomLink to="/tech">Tech</CustomLink>
                         </li>
                     </ul>
                 </nav>
@@ -54,4 +41,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default Navbar;
