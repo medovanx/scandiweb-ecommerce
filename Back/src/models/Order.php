@@ -9,7 +9,7 @@ class Order extends Model
     protected $fillable = [
         'product_id', 'quantity', 'total_price'
     ];
-    public $timestamps = false; // Disable automatic timestamp management
+    public $timestamps = true; // Disable automatic timestamp management
 
     public function product()
     {
