@@ -27,6 +27,15 @@ class GraphQL
                             return \App\GraphQL\Resolvers\ProductResolver::resolve($root, $args, $context, $info);
                         },
                     ],
+                    'productsByCategory' => [
+                        'type' => Type::listOf(new \App\GraphQL\Schema\ProductSchema()),
+                        'args' => [
+                            'categoryId' => ['type' => Type::id()],
+                        ],
+                        'resolve' => function ($root, $args, $context, $info) {
+                            return \App\GraphQL\Resolvers\ProductResolver::productsByCategory($root, $args, $context, $info);
+                        },
+                    ],
                 ],
             ]);
 

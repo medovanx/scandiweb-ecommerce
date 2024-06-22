@@ -19,11 +19,38 @@ class ProductResolver
             $product->attributes = $product->attributes->map(function ($attribute) {
                 return [
                     'id' => $attribute->id,
-                    'name' => $attribute->attribute_name, 
+                    'name' => $attribute->attribute_name,
                     'value' => $attribute->attribute_value,
                 ];
             })->toArray();
             return $product;
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            error_log($e->getTraceAsString());
+            throw $e;
+        }
+    }
+    public static function productsByCategory($root, $args, $context, $info)
+    {
+        try {
+            $categoryId = $args['categoryId']; // Assuming you pass categoryId as argument
+            // Fetch products based on category ID
+            $products = Product::where('category_id', $categoryId)
+                ->with(['category', 'images', 'attributes', 'prices'])
+                ->get();
+
+            // Map attributes for each product
+            $products->each(function ($product) {
+                $product->attributes = $product->attributes->map(function ($attribute) {
+                    return [
+                        'id' => $attribute->id,
+                        'name' => $attribute->attribute_name,
+                        'value' => $attribute->attribute_value,
+                    ];
+                })->toArray();
+            });
+
+            return $products;
         } catch (Throwable $e) {
             error_log($e->getMessage());
             error_log($e->getTraceAsString());
