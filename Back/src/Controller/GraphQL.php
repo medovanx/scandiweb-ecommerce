@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use GraphQL\GraphQL as GraphQLBase;
@@ -22,7 +23,9 @@ class GraphQL
                         'args' => [
                             'id' => ['type' => Type::id()],
                         ],
-                        'resolve' => ['\App\GraphQL\Resolvers\ProductResolver', 'resolve'],
+                        'resolve' => function ($root, $args, $context, $info) {
+                            return \App\GraphQL\Resolvers\ProductResolver::resolve($root, $args, $context, $info);
+                        },
                     ],
                 ],
             ]);
@@ -33,10 +36,11 @@ class GraphQL
                     'createOrder' => [
                         'type' => Type::boolean(),
                         'args' => [
-                            'order' => ['type' => Type::string()],
+                            'productId' => ['type' => Type::nonNull(Type::id())],
+                            'quantity' => ['type' => Type::nonNull(Type::int())],
                         ],
-                        'resolve' => function () {
-                            return '\App\GraphQL\Resolvers\OrderResolver'::createOrder();
+                        'resolve' => function ($root, $args) {
+                            return \App\GraphQL\Resolvers\OrderResolver::createOrder($args);
                         },
                     ],
                 ],
