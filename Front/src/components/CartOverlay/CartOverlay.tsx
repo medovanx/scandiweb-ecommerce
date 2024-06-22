@@ -46,40 +46,20 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
 
         return (
             <div className="item-attributes">
-                {/* Render Color attribute if exists */}
-                {attributesMap.has('color') && (
-                    <div>
-                        <span className="attribute-name">Color: </span>
-                        {attributesMap.get('color')!.map((value, index) => (
-                            <span key={`color-${index}`} style={{ backgroundColor: value }} className="color-attribute"></span>
-                        ))}
+                {Array.from(attributesMap.entries()).map(([name, values], index) => (
+                    <div key={`${name}-${index}`}>
+                        <span className="attribute-name">{name === 'color' ? 'Color' : name}: </span>
+                        {name === 'color' ? (
+                            values.map((value, idx) => (
+                                <span key={`${name}-${idx}`} style={{ backgroundColor: value }} className="color-attribute"></span>
+                            ))
+                        ) : (
+                            values.map((value, idx) => (
+                                <span key={`${name}-${idx}`} className="attribute-value-box">{value}</span>
+                            ))
+                        )}
                     </div>
-                )}
-
-                {/* Render Size attribute if exists */}
-                {attributesMap.has('size') && (
-                    <div>
-                        <span className="attribute-name">Size: </span>
-                        {attributesMap.get('size')!.map((value, index) => (
-                            <span key={`size-${index}`} className="attribute-value-box">{value}</span>
-                        ))}
-                    </div>
-                )}
-
-                {/* Render other attributes */}
-                {Array.from(attributesMap.entries()).map(([name, values], index) => {
-                    if (name !== 'color' && name !== 'size') {
-                        return (
-                            <div key={`other-${index}`}>
-                                <span className="attribute-name">{name}: </span>
-                                {values.map((value, idx) => (
-                                    <span key={`${name}-${idx}`} className="attribute-value-box">{value}</span>
-                                ))}
-                            </div>
-                        );
-                    }
-                    return null;
-                })}
+                ))}
             </div>
         );
     };
