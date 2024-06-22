@@ -30,7 +30,7 @@ class GraphQL
                     'productsByCategory' => [
                         'type' => Type::listOf(new \App\GraphQL\Schema\ProductSchema()),
                         'args' => [
-                            'categoryId' => ['type' => Type::id()],
+                            'categoryName' => ['type' => Type::string()],
                         ],
                         'resolve' => function ($root, $args, $context, $info) {
                             return \App\GraphQL\Resolvers\ProductResolver::productsByCategory($root, $args, $context, $info);

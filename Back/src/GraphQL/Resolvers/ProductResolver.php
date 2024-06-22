@@ -4,6 +4,7 @@ namespace App\GraphQL\Resolvers;
 use App\Models\Product;
 use Throwable;
 use App\Utils\Database;
+use App\Models\Category;
 
 Database::initialize();
 class ProductResolver
@@ -33,7 +34,9 @@ class ProductResolver
     public static function productsByCategory($root, $args, $context, $info)
     {
         try {
-            $categoryId = $args['categoryId']; // Assuming you pass categoryId as argument
+            $category = Category::where('name', $args['categoryName'])->first();
+            $categoryId = $category->id;
+
             // Fetch products based on category ID
             $products = Product::where('category_id', $categoryId)
                 ->with(['category', 'images', 'attributes', 'prices'])
