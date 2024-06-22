@@ -46,17 +46,31 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
 
         return (
             <div className="item-attributes">
-                {Array.from(attributesMap.entries()).map(([name, values], index) => (
+                {Array.from(attributesMap.entries()).map(([name], index) => (
                     <div key={`${name}-${index}`}>
                         <span className="attribute-name">{name === 'color' ? 'Color' : name}: </span>
                         {name === 'color' ? (
-                            values.map((value, idx) => (
-                                <span key={`${name}-${idx}`} style={{ backgroundColor: value }} className="color-attribute"></span>
-                            ))
+                            item.attributes
+                                .filter(attr => attr.name.toLowerCase() === name)
+                                .map((attr, idx) => (
+                                    <span
+                                        key={`${name}-${idx}`}
+                                        style={{ backgroundColor: attr.value }}
+                                        className={`color-attribute ${attr.selected ? 'selected' : ''}`}
+                                        
+                                    ></span>
+                                ))
                         ) : (
-                            values.map((value, idx) => (
-                                <span key={`${name}-${idx}`} className="attribute-value-box">{value}</span>
-                            ))
+                            item.attributes
+                                .filter(attr => attr.name.toLowerCase() === name)
+                                .map((attr, idx) => (
+                                    <span
+                                        key={`${name}-${idx}`}
+                                        className={`attribute-value-box ${attr.selected ? 'selected-attribute-value-box' : ''}`}
+                                    >
+                                        {attr.value}
+                                    </span>
+                                ))
                         )}
                     </div>
                 ))}

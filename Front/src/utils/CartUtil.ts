@@ -14,14 +14,13 @@ export function addToCart(
     cartItems: CartItem[],
     setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>,
 ): void {
-    // Create a unique identifier for the product based on selected attributes
+    const defaultAttributes = getFirstAttributes(product.attributes);
+
     const identifier = `${product.id}`;
 
-    // Check if the product is already in the cart
     const existingItem = cartItems.find(item => item.id === identifier);
 
     if (existingItem) {
-        // If the product with the same attributes is already in the cart, update its quantity
         const updatedCartItems = cartItems.map(item => {
             if (item.id === identifier) {
                 return { ...item, quantity: item.quantity + 1, totalPrice: item.price * (item.quantity + 1) };
@@ -30,28 +29,29 @@ export function addToCart(
         });
         setCartItems(updatedCartItems);
     } else {
-        // If the product with selected attributes is not in the cart, add it
         const newCartItem: CartItem = {
             id: identifier,
             name: product.name,
-            quantity: 1,    // Initial quantity is 1
-            price: product.prices[0]?.amount || 0, // Assuming the first price is used
-            totalPrice: product.prices[0]?.amount || 0, // Initial total price is the same as price
-            attributes: product.attributes,
-            image: product.images[0]?.url // Assuming this is the URL of the first image
+            quantity: 1,
+            price: product.prices[0]?.amount || 0,
+            totalPrice: product.prices[0]?.amount || 0,
+            attributes: defaultAttributes,
+            image: product.images[0]?.url
         };
         setCartItems([...cartItems, newCartItem]);
     }
 }
 
-export function getFirstAttributes(attributes: { id: string; name: string; value: string }[]): string[] {
-    const firstAttributes: string[] = [];
+export function getFirstAttributes(attributes: { id: string; name: string; value: string }[]): { id: string; name: string; value: string, selected: boolean }[] {
+    const firstAttributes: { id: string; name: string; value: string, selected: boolean }[] = [];
     const attributeTypes = new Set<string>();
 
     attributes.forEach(attr => {
         if (!attributeTypes.has(attr.name)) {
-            firstAttributes.push(attr.value);
+            firstAttributes.push({ ...attr, selected: true });
             attributeTypes.add(attr.name);
+        } else {
+            firstAttributes.push({ ...attr, selected: false });
         }
     });
 

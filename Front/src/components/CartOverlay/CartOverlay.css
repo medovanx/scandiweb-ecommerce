@@ -149,3 +149,12 @@
     margin-right: 5px;
     font-size: 16px;
 }
+
+.selected {
+    border: 2px solid blue; 
+}
+
+.selected-attribute-value-box {
+    color: white;
+    background-color: black;
+}
