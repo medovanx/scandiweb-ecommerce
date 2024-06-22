@@ -28,9 +28,10 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSe
         <div className="product-attributes">
             {uniqueAttributeNames.map((name, index) => {
                 const attributeValues = attributes.filter(attr => attr.name === name).map(attr => attr.value);
+                const kebabCaseName = name.toLowerCase().split(' ').join('-');
 
                 return (
-                    <div key={index} className="attribute-selector">
+                    <div key={index} className="attribute-selector" data-testid={`product-attribute-${kebabCaseName}`}>
                         <span>{name.toUpperCase()}:</span>
                         {name.toLowerCase() === 'color' ? (
                             <div className="color-swatches">

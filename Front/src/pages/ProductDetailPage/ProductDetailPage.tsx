@@ -41,7 +41,7 @@ const ProductDetailPage: React.FC = () => {
 
     return (
         <div className="product-detail-page">
-            <ImageGallery images={product.images} />
+            <ImageGallery images={product.images} data-testid="product-gallery" />
             <div className="product-details">
                 <h1>{product.name}</h1>
                 <ProductAttributes attributes={product.attributes} setSelectedAttributes={setSelectedAttributes} />
@@ -51,10 +51,11 @@ const ProductDetailPage: React.FC = () => {
                     className={`add-to-cart-button-detail ${!allAttributesSelected() ? 'disabled' : ''}`}
                     onClick={handleAddToCart}
                     disabled={!allAttributesSelected()}
+                    data-testid="add-to-cart"
                 >
                     <BsCart2 size={20} /> ADD TO CART
                 </button>}
-                <div className="product-description">
+                <div className="product-description" data-testid="product-description">
                     {convertChildNodesToReactNodes(parseDescription(product.description))}
                 </div>
             </div>
