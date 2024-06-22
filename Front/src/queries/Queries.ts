@@ -59,3 +59,23 @@ export const PRODUCTS_BY_ID_QUERY = gql`
     }
   }
 `;
+
+export const CREATE_ORDER_MUTATION = gql`
+  mutation CreateOrder($productId: ID!, $quantity: Int!, $attributes: String) {
+    createOrder(productId: $productId, quantity: $quantity, attributes: $attributes) {
+      success
+      message
+      order {
+        id
+        product_id
+        product_name
+        quantity
+        price
+        total_price
+        attributes
+        image_url
+        created_at
+      }
+    }
+  }
+`;
