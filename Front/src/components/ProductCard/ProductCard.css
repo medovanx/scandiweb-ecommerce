@@ -1,0 +1,49 @@
+/* src/ProductCard.css */
+.product-card {
+    border-radius: 5px;
+    width: 200px;
+    padding: 10px;
+    box-shadow: 0 0 10px #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.product-info {
+    text-align: left;
+}
+
+.product-name {
+    font-size: 1.1rem;
+    font-weight: light;
+}
+
+.product-price {
+    font-size: 0.9rem;
+    color: black;
+}
+
+.out-of-stock {
+    color: rgb(180, 180, 180);
+    font-weight: light;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #218838;
+}
