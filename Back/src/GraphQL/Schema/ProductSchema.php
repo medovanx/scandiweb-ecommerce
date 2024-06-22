@@ -13,6 +13,9 @@ class ProductSchema extends ObjectType
             'fields' => [
                 'id' => Type::id(),
                 'name' => Type::string(),
+                'in_stock' => Type::boolean(),
+                'brand' => Type::string(),
+                'description' => Type::string(),
                 'category' => new CategorySchema(),
                 'images' => Type::listOf(new ImageSchema()),
                 'attributes' => Type::listOf(new AttributeSchema()),
