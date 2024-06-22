@@ -34,7 +34,14 @@ class GraphQL
                 'name' => 'Mutation',
                 'fields' => [
                     'createOrder' => [
-                        'type' => Type::boolean(),
+                        'type' => new ObjectType([
+                            'name' => 'CreateOrderResponse',
+                            'fields' => [
+                                'success' => ['type' => Type::nonNull(Type::boolean())],
+                                'message' => ['type' => Type::nonNull(Type::string())],
+                                'order' => ['type' => new \App\GraphQL\Schema\OrderSchema()],
+                            ],
+                        ]),
                         'args' => [
                             'productId' => ['type' => Type::nonNull(Type::id())],
                             'quantity' => ['type' => Type::nonNull(Type::int())],
@@ -71,8 +78,9 @@ class GraphQL
             echo json_encode($output);
         } catch (Throwable $e) {
             header('Content-Type: application/json', true, 500);
-            echo json_encode(['errors' => [['message' => $e->getTraceAsString()]]]);
             echo json_encode(['errors' => [['message' => $e->getMessage()]]]);
         }
+
+
     }
 }
