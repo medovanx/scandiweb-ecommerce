@@ -3,6 +3,8 @@ import './CartOverlay.css'; // Import CSS for CartOverlay styling
 import { useCartContext } from '../../context/CartContext';
 import { updateCartItemQuantity, removeCartItem } from '../../utils/CartUtil'; // Import the utility functions
 import { CartItem } from '../../types/CartItem';
+import { useMutation } from '@apollo/client';
+import { CREATE_ORDER_MUTATION } from '../../queries/Queries';
 
 interface CartOverlayProps {
     isOpen: boolean;
@@ -11,6 +13,7 @@ interface CartOverlayProps {
 
 const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
     const { cartCount, cartItems, setCartItems } = useCartContext();
+    const [createOrder] = useMutation(CREATE_ORDER_MUTATION);
 
     if (!isOpen) return null;
 
@@ -29,6 +32,47 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
         setCartItems(updatedCartItems);
     };
 
+    const handleCheckout = async () => {
+        try {
+            const successfulOrderIds: string[] = [];
+
+            // Loop through cart items to create orders
+            for (const item of cartItems) {
+                // Split productId by '|' and take the first part as productId
+                const productId = item.id.split('|')[0].trim();
+                const { quantity } = item;
+
+                // Filter attributes to send only selected ones
+                const selectedAttributes = item.attributes
+                    .filter(attr => attr.selected)
+                    .map(attr => ({
+                        id: attr.id,
+                        name: attr.name,
+                        value: attr.value
+                    }));
+
+                const attributes = JSON.stringify(selectedAttributes); // Convert attributes to string for mutation
+
+                // Send order creation mutation and await response
+                const { data } = await createOrder({ variables: { productId, quantity, attributes } });
+
+                // Check if order creation was successful
+                if (data?.createOrder?.success) {
+                    successfulOrderIds.push(item.id); // Store successful order id
+                } else {
+                    throw new Error(`Failed to create order for item ${item.id}: ${data?.createOrder?.message}`);
+                }
+            }
+
+            // Filter out successfully placed orders from cartItems and update state
+            const updatedCartItems = cartItems.filter(item => !successfulOrderIds.includes(item.id));
+            setCartItems(updatedCartItems);
+        } catch (error) {
+            console.error('Failed to checkout:', error);
+            // Handle error (e.g., display error message to the user)
+        }
+    };
+    
     const renderAttributes = (item: CartItem) => {
         const attributesMap = new Map<string, string[]>(); // Map to store attributes by name
 
@@ -115,6 +159,8 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                     <button
                         className={`checkout-btn ${cartCount === 0 ? 'disabled' : ''}`}
                         disabled={cartCount === 0}
+                        onClick={handleCheckout} // Trigger handleCheckout function on button click
+
                     >
                         Checkout
                     </button>
