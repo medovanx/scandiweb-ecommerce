@@ -57,7 +57,8 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                                         key={`${name}-${idx}`}
                                         style={{ backgroundColor: attr.value }}
                                         className={`color-attribute ${attr.selected ? 'selected' : ''}`}
-                                        data-testid={`${attr.selected ? `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}-selected` : ''}`}
+                                        data-testid={`${attr.selected ? `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}-selected` :
+                                            `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}`}`}
 
                                     ></span>
                                 ))
@@ -68,6 +69,8 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                                     <span
                                         key={`${name}-${idx}`}
                                         className={`attribute-value-box ${attr.selected ? 'selected-attribute-value-box' : ''}`}
+                                        data-testid={`${attr.selected ? `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}-selected` :
+                                            `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}`}`}
                                     >
                                         {attr.value}
                                     </span>
