@@ -44,8 +44,8 @@
 
 .product-name {
     font-size: 1.1rem;
-    font-weight: light;
     max-width: 130px;
+    color: blue;
 }
 
 .product-price {
@@ -62,7 +62,7 @@
     background-color: #28a745;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 12px;
     cursor: pointer;
     border-radius: 50%;
     position: absolute;
@@ -73,6 +73,8 @@
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: none;
+    z-index: 1;
+
 }
 
 .add-to-cart-button:hover {
