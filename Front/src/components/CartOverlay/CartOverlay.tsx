@@ -47,7 +47,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
         return (
             <div className="item-attributes">
                 {Array.from(attributesMap.entries()).map(([name], index) => (
-                    <div key={`${name}-${index}`}>
+                    <div key={`${name}-${index}`} data-testid={`cart-item-attribute-${name.split(" ").join("-")}`}>
                         <span className="attribute-name">{name === 'color' ? 'Color' : name}: </span>
                         {name === 'color' ? (
                             item.attributes
@@ -57,6 +57,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                                         key={`${name}-${idx}`}
                                         style={{ backgroundColor: attr.value }}
                                         className={`color-attribute ${attr.selected ? 'selected' : ''}`}
+                                        data-testid={`${attr.selected ? `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}-selected` : ''}`}
 
                                     ></span>
                                 ))
@@ -83,7 +84,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
             <div className="cart-overlay">
                 <div className="cart-overlay-content">
                     <span className="close-btn" onClick={onClose}>&times;</span>
-                    <p><span className='main-bag-text'>My Bag</span>, {cartCount} {cartCount === 1 ? 'item' : 'items'}</p>
+                    <p><span className='main-bag-text'>My Bag</span>, <span className='amount-indicator' data-testid='cart-total'>{cartCount} {cartCount === 1 ? 'item' : 'items'}</span></p>
                     <ul className="cart-items">
                         {cartItems.map(item => (
                             <li key={item.id}>
@@ -92,10 +93,10 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                                         <h4>{item.name}</h4>
                                         <p>${item.totalPrice.toFixed(2)}</p> {/* Display totalPrice */}
                                         {renderAttributes(item)}
-                                        <p>Quantity: {item.quantity}</p>
+                                        <p data-testid='cart-item-amount'>Quantity: {item.quantity}</p>
                                         <div className="quantity-btns">
-                                            <button className="quantity-btn" onClick={() => handleIncrement(item.id)}>+</button>
-                                            <button className="quantity-btn" onClick={() => handleDecrement(item.id)}>-</button>
+                                            <button className="quantity-btn" data-testid='cart-item-amount-increase' onClick={() => handleIncrement(item.id)}>+</button>
+                                            <button className="quantity-btn" data-testid='cart-item-amount-decrease' onClick={() => handleDecrement(item.id)}>-</button>
                                             <button className="quantity-btn" onClick={() => handleRemove(item.id)}>Remove</button>
 
                                         </div>

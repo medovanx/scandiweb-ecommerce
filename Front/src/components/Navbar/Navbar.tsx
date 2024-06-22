@@ -20,13 +20,13 @@ const Navbar = () => {
             <div className="header-items">
                 <nav>
                     <ul>
-                        <li key="all" data-testid='all-link'>
+                        <li key="all" data-testid='category-link'>
                             <CustomLink to="/all">All</CustomLink>
                         </li>
-                        <li key="clothes" data-testid='clothes-link'>
+                        <li key="clothes" data-testid='category-link'>
                             <CustomLink to="/clothes">Clothes</CustomLink>
                         </li>
-                        <li key="tech" data-testid='tech-link'>
+                        <li key="tech" data-testid='category-link'>
                             <CustomLink to="/tech">Tech</CustomLink>
                         </li>
                     </ul>
