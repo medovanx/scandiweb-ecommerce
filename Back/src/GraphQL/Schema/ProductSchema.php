@@ -4,8 +4,10 @@ namespace App\GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
-class ProductSchema extends ObjectType {
-    public function __construct() {
+class ProductSchema extends ObjectType
+{
+    public function __construct()
+    {
         $config = [
             'name' => 'Product',
             'fields' => [
