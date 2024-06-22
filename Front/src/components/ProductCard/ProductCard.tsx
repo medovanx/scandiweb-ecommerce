@@ -1,14 +1,26 @@
 import './ProductCard.css';
 import { BsCart2 } from "react-icons/bs";
+import { useCartContext } from '../../context/CartContext';
+import { addToCart } from '../../utils/CartUtil'; // Adjust the path based on your project structure
 
 interface ProductCardProps {
-    id: number;
-    name: string;
-    images: Array<{ id: number; url: string }>;
-    prices: Array<{ id: number; amount: number; currency: string }>;
-    in_stock: boolean;
+    product: {
+        id: string;
+        name: string;
+        images: { id: string; url: string }[];
+        prices: { id: string; amount: number; currency: string }[];
+        in_stock: boolean;
+        attributes: { id: string; name: string; value: string }[];
+    };
 }
-const ProductCard = ({ product }: { product: ProductCardProps }) => {
+
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+    const { cartItems, setCartItems } = useCartContext();
+
+    const handleAddToCart = () => {
+        addToCart(product, cartItems, setCartItems);
+    };
+
     return (
         <div className="product-card" data-testid={`product-${product.name.split(' ').join('-').toLowerCase()}`}>
             <div className="product-image">
@@ -26,8 +38,12 @@ const ProductCard = ({ product }: { product: ProductCardProps }) => {
             <div className="product-info">
                 <p className='product-name'>{product.name}</p>
                 <p className='product-price'>${product.prices[0]?.amount}</p>
-
-            </div>{product.in_stock && <button className='add-to-cart-button'><BsCart2 size={20} /></button>}
+            </div>
+            {product.in_stock && (
+                <button className='add-to-cart-button' onClick={handleAddToCart}>
+                    <BsCart2 size={20} />
+                </button>
+            )}
         </div>
     );
 };

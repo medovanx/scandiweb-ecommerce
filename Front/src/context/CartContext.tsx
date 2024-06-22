@@ -1,12 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { CartItem } from '../types/CartItem';
 
-// Define your CartItem type
-interface CartItem {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-}
 
 // Define your context type
 interface CartContextType {
@@ -32,6 +26,22 @@ export const useCartContext = () => {
 const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  // Initialize state from localStorage on mount
+  useEffect(() => {
+    const storedCartItems = localStorage.getItem('cartItems');
+    if (storedCartItems) {
+      const parsedCartItems = JSON.parse(storedCartItems);
+      setCartItems(parsedCartItems);
+      setCartCount(parsedCartItems.length);
+    }
+  }, []);
+
+  // Update localStorage whenever cartItems change
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    setCartCount(cartItems.length);
+  }, [cartItems]);
 
   return (
     <CartContext.Provider value={{ cartCount, setCartCount, cartItems, setCartItems }}>

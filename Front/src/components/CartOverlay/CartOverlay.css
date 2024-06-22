@@ -12,24 +12,30 @@
     position: fixed;
     top: 60px;
     right: 4.5%;
-    width: 300px;
+    width: 400px;
+    max-height: calc(100vh - 80px);
+    /* Adjusted to fit within viewport */
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
+    overflow-y: auto;
+    /* Added to enable vertical scrolling */
     z-index: 1000;
 }
 
 .cart-overlay-content {
     padding: 18px;
-    max-height: calc(100vh - 50px);
+    max-height: calc(100vh - 140px);
+    /* Adjusted to leave space for header and footer */
     overflow-y: auto;
+    /* Added to enable scrolling */
 }
 
 .close-btn {
     position: absolute;
-    top: 5px;
-    right: 10px;
-    font-size: 20px;
+    top: -6px;
+    right: 25px;
+    font-size: 40px;
     cursor: pointer;
     color: #333;
 }
@@ -71,3 +77,69 @@
 .checkout-btn:hover {
     background-color: #218838;
 }
+
+.item-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.item-image img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.quantity-btns {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.quantity-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.item-attributes {
+    margin-bottom: 10px;
+}
+
+.attribute-name {
+    font-weight: 500;
+}
+
+.color-attribute, .color-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.color-attribute {
+    border: 1px solid #ccc; /* Add border for color attribute */
+}
+
+.color-box {
+    border: 1px solid transparent; /* Example border for color boxes */
+    cursor: pointer;
+}
+
+.color-box.selected {
+    border-color: #333; /* Example styling for selected color box */
+}
+
+.item-attributes {
+    margin-bottom: 10px;
+}
+
+.attribute-value-box {
+    display: inline-block;
+    padding: 3px 6px;
+    border: 1px solid #ccc; /* Example border for attribute value box */
+    margin-right: 5px;
+    font-size: 16px;
+}
+
