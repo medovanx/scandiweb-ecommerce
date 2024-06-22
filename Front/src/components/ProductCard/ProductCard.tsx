@@ -2,7 +2,6 @@ import './ProductCard.css';
 import { BsCart2 } from "react-icons/bs";
 import { useCartContext } from '../../context/CartContext';
 import { addToCart } from '../../utils/CartUtil'; // Adjust the path based on your project structure
-import { Navigate } from 'react-router-dom';
 
 interface ProductCardProps {
     product: {
