@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ProductAttributes.css';
 
 interface ProductAttributesProps {
@@ -7,23 +7,26 @@ interface ProductAttributesProps {
         name: string;
         value: string;
     }[];
+    setSelectedAttributes: React.Dispatch<React.SetStateAction<{ id: string; name: string; value: string }[]>>
 }
 
-const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes }) => {
-    const [selectedAttributes, setSelectedAttributes] = useState<{ [key: string]: string }>({});
+const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSelectedAttributes }) => {
+    const [selectedAttributes, setSelectedAttributesState] = useState<{ [key: string]: string }>({});
 
-    // Function to handle attribute selection
+    useEffect(() => {
+        const selected = attributes.map(attr => ({ id: attr.id, name: attr.name, value: selectedAttributes[attr.name] || '' })).filter(attr => attr.value !== '');
+        setSelectedAttributes(selected);
+    }, [selectedAttributes, attributes, setSelectedAttributes]);
+
     const handleAttributeSelect = (name: string, value: string) => {
-        setSelectedAttributes({ ...selectedAttributes, [name]: value });
+        setSelectedAttributesState({ ...selectedAttributes, [name]: value });
     };
 
-    // Extract unique attribute names
     const uniqueAttributeNames = Array.from(new Set(attributes.map(attr => attr.name)));
 
     return (
         <div className="product-attributes">
             {uniqueAttributeNames.map((name, index) => {
-                // Filter values for the current attribute name
                 const attributeValues = attributes.filter(attr => attr.name === name).map(attr => attr.value);
 
                 return (

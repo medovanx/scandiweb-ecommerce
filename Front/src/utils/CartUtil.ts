@@ -13,10 +13,28 @@ export function addToCart(
     product: Product,
     cartItems: CartItem[],
     setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>,
+    selectedAttributes?: { id: string; name: string; value: string }[]
 ): void {
-    const defaultAttributes = getFirstAttributes(product.attributes);
+    const attributesToUse = selectedAttributes || getFirstAttributes(product.attributes);
 
-    const identifier = `${product.id}`;
+    // Create a map to store selected attribute values
+    const selectedAttributeMap: { [name: string]: string } = {};
+    attributesToUse.forEach(attr => {
+        selectedAttributeMap[attr.name] = attr.value;
+    });
+
+    // Create the identifier with selected attributes
+    const identifierParts = [product.id];
+    attributesToUse.forEach(attr => {
+        if (selectedAttributeMap[attr.name]) {
+            // check if the part isn't already in the identifier
+            if (!identifierParts.includes(`${attr.name}:${attr.value}`)) {
+                identifierParts.push(`${attr.name}:${attr.value}`);
+            }
+        }
+    });
+
+    const identifier = identifierParts.join('|');
 
     const existingItem = cartItems.find(item => item.id === identifier);
 
@@ -29,15 +47,27 @@ export function addToCart(
         });
         setCartItems(updatedCartItems);
     } else {
-        const newCartItem: CartItem = {
+        let newCartItem: CartItem = {
             id: identifier,
             name: product.name,
             quantity: 1,
             price: product.prices[0]?.amount || 0,
             totalPrice: product.prices[0]?.amount || 0,
-            attributes: defaultAttributes,
+            attributes: selectedAttributes ?
+                product.attributes.map(attr => ({
+                    ...attr,
+                    selected: attributesToUse.some(selectedAttr => selectedAttr.name === attr.name && selectedAttr.value === attr.value)
+                })) :
+                attributesToUse.map(attr => ({
+                    ...attr,
+                })),
+
+            // Rest of the properties
             image: product.images[0]?.url
         };
+
+        console.log(newCartItem);
+
         setCartItems([...cartItems, newCartItem]);
     }
 }
@@ -54,7 +84,6 @@ export function getFirstAttributes(attributes: { id: string; name: string; value
             firstAttributes.push({ ...attr, selected: false });
         }
     });
-
     return firstAttributes;
 }
 
