@@ -167,7 +167,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                                 onClick={handleCheckout} // Trigger handleCheckout function on button click
 
                             >
-                                Checkout
+                                PLACE ORDER
                             </button>
                         </div>
                     </div>
