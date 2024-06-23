@@ -1,6 +1,4 @@
-import { gql } from '@apollo/client';
-
-export const PRODUCTS_BY_CATEGORY_QUERY = gql`
+export const PRODUCTS_BY_CATEGORY_QUERY = `
   query ProductsByCategory($categoryName: String!) {
     productsByCategory(categoryName: $categoryName) {
       id
@@ -30,7 +28,7 @@ export const PRODUCTS_BY_CATEGORY_QUERY = gql`
   }
 `;
 
-export const PRODUCTS_BY_ID_QUERY = gql`
+export const PRODUCTS_BY_ID_QUERY = `
   query GetProduct($id: ID!) {
     product(id: $id) {
       id
@@ -60,7 +58,7 @@ export const PRODUCTS_BY_ID_QUERY = gql`
   }
 `;
 
-export const CREATE_ORDER_MUTATION = gql`
+export const CREATE_ORDER_MUTATION = `
   mutation CreateOrder($productId: ID!, $quantity: Int!, $attributes: String) {
     createOrder(productId: $productId, quantity: $quantity, attributes: $attributes) {
       success
