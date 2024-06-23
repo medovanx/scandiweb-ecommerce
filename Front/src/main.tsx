@@ -3,8 +3,10 @@ import App from './App';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import CartProvider from './context/CartContext';
 
+const apiURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+console.log("API URL:", apiURL);
 const client = new ApolloClient({
-  uri: 'http://localhost:8000/graphql',
+  uri: `${apiURL}/graphql`,
   cache: new InMemoryCache(),
 });
 
