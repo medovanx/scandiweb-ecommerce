@@ -15,6 +15,11 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
     const { cartCount, cartItems, setCartItems } = useCartContext();
     const [createOrder] = useMutation(CREATE_ORDER_MUTATION);
 
+    const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        // Prevent closing when clicking inside the cart content
+        event.stopPropagation();
+    };
+
     const handleIncrement = (itemId: string) => {
         const updatedCartItems = updateCartItemQuantity(cartItems, itemId, 1);
         setCartItems(updatedCartItems);
@@ -70,7 +75,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
             // Handle error (e.g., display error message to the user)
         }
     };
-    
+
     const renderAttributes = (item: CartItem) => {
         const attributesMap = new Map<string, string[]>(); // Map to store attributes by name
 
@@ -128,7 +133,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
         <>
             {isOpen && (
                 <div className="overlay-bg" onClick={onClose}>
-                    <div className="cart-overlay" data-testid='cart-overlay'>
+                    <div className="cart-overlay" data-testid='cart-overlay' onClick={handleClick}>
                         <div className="cart-overlay-content">
                             <span className="close-btn" onClick={onClose}>&times;</span>
                             <p><span className='main-bag-text'>My Bag</span>, <span className='amount-indicator' data-testid='cart-total'>{cartCount} {cartCount === 1 ? 'item' : 'items'}</span></p>
