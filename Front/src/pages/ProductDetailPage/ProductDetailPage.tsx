@@ -53,7 +53,8 @@ const ProductDetailPage: React.FC = () => {
                     disabled={!allAttributesSelected()}
                     data-testid="add-to-cart"
                 >
-                    <BsCart2 size={20} /> ADD TO CART
+                    <BsCart2 size={20} />
+                    ADD TO CART
                 </button>}
                 <div className="product-description" data-testid="product-description">
                     {convertChildNodesToReactNodes(parseDescription(product.description))}
