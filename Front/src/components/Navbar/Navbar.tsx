@@ -31,8 +31,8 @@ const Navbar = () => {
                         </li>
                     </ul>
                 </nav>
-                <div className="cart-icon" onClick={toggleCart}>
-                    <span data-testid='cart-btn'><BsCart2 size={30} /></span>
+                <div className="cart-icon" data-testid='cart-btn' onClick={toggleCart}>
+                    <span><BsCart2 size={30} /></span>
                     {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
                 </div>
                 <CartOverlay isOpen={cartOpen} onClose={toggleCart} />
