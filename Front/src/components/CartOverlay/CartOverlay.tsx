@@ -15,8 +15,6 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
     const { cartCount, cartItems, setCartItems } = useCartContext();
     const [createOrder] = useMutation(CREATE_ORDER_MUTATION);
 
-    if (!isOpen) return null;
-
     const handleIncrement = (itemId: string) => {
         const updatedCartItems = updateCartItemQuantity(cartItems, itemId, 1);
         setCartItems(updatedCartItems);
@@ -127,46 +125,50 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
     };
 
     return (
-        <div className="overlay-bg">
-            <div className="cart-overlay" data-testid='cart-overlay'>
-                <div className="cart-overlay-content">
-                    <span className="close-btn" onClick={onClose}>&times;</span>
-                    <p><span className='main-bag-text'>My Bag</span>, <span className='amount-indicator' data-testid='cart-total'>{cartCount} {cartCount === 1 ? 'item' : 'items'}</span></p>
-                    <ul className="cart-items">
-                        {cartItems.map(item => (
-                            <li key={item.id}>
-                                <div className="item-info">
-                                    <div className="item-details">
-                                        <h4>{item.name}</h4>
-                                        <p>${item.totalPrice.toFixed(2)}</p> {/* Display totalPrice */}
-                                        {renderAttributes(item)}
-                                        <p data-testid='cart-item-amount'>Quantity: {item.quantity}</p>
-                                        <div className="quantity-btns">
-                                            <button className="quantity-btn" data-testid='cart-item-amount-increase' onClick={() => handleIncrement(item.id)}>+</button>
-                                            <button className="quantity-btn" data-testid='cart-item-amount-decrease' onClick={() => handleDecrement(item.id)}>-</button>
-                                            <button className="quantity-btn" onClick={() => handleRemove(item.id)}>Remove</button>
+        <>
+            {isOpen && (
+                <div className="overlay-bg" onClick={onClose}>
+                    <div className="cart-overlay" data-testid='cart-overlay'>
+                        <div className="cart-overlay-content">
+                            <span className="close-btn" onClick={onClose}>&times;</span>
+                            <p><span className='main-bag-text'>My Bag</span>, <span className='amount-indicator' data-testid='cart-total'>{cartCount} {cartCount === 1 ? 'item' : 'items'}</span></p>
+                            <ul className="cart-items">
+                                {cartItems.map(item => (
+                                    <li key={item.id}>
+                                        <div className="item-info">
+                                            <div className="item-details">
+                                                <h4>{item.name}</h4>
+                                                <p>${item.totalPrice.toFixed(2)}</p> {/* Display totalPrice */}
+                                                {renderAttributes(item)}
+                                                <p data-testid='cart-item-amount'>Quantity: {item.quantity}</p>
+                                                <div className="quantity-btns">
+                                                    <button className="quantity-btn" data-testid='cart-item-amount-increase' onClick={() => handleIncrement(item.id)}>+</button>
+                                                    <button className="quantity-btn" data-testid='cart-item-amount-decrease' onClick={() => handleDecrement(item.id)}>-</button>
+                                                    <button className="quantity-btn" onClick={() => handleRemove(item.id)}>Remove</button>
 
+                                                </div>
+                                            </div>
+                                            <div className="item-image">
+                                                <img src={item.image} alt={item.name} />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="item-image">
-                                        <img src={item.image} alt={item.name} />
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                    <p className="total-price">Total: ${cartItems.reduce((acc, item) => acc + item.totalPrice, 0).toFixed(2)}</p>
-                    <button
-                        className={`checkout-btn ${cartCount === 0 ? 'disabled' : ''}`}
-                        disabled={cartCount === 0}
-                        onClick={handleCheckout} // Trigger handleCheckout function on button click
+                                    </li>
+                                ))}
+                            </ul>
+                            <p className="total-price">Total: ${cartItems.reduce((acc, item) => acc + item.totalPrice, 0).toFixed(2)}</p>
+                            <button
+                                className={`checkout-btn ${cartCount === 0 ? 'disabled' : ''}`}
+                                disabled={cartCount === 0}
+                                onClick={handleCheckout} // Trigger handleCheckout function on button click
 
-                    >
-                        Checkout
-                    </button>
+                            >
+                                Checkout
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            )}
+        </>
     );
 };
 
