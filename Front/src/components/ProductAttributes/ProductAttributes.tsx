@@ -46,15 +46,17 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSe
                         <span>{name.toUpperCase()}:</span>
                         {name.toLowerCase() === 'color' ? (
                             <div className="color-swatches">
-                                {attributes.map((attr, idx) => (
-                                    <button
-                                        key={idx}
-                                        style={{ backgroundColor: attr.value }}
-                                        className={selectedAttributes[name] === attr.value ? 'color-button selected' : 'color-button'}
-                                        onClick={() => handleAttributeSelect(name, attr.value)}
-                                        data-testid={`product-attribute-${kebabCaseName}-${attr.displayValue}`} // Use attr.displayValue here
-                                    />
-                                ))}
+                                {attributes
+                                    .filter(attr => attr.name.toLowerCase() === 'color')
+                                    .map((attr, idx) => (
+                                        <button
+                                            key={idx}
+                                            style={{ backgroundColor: attr.value }}
+                                            className={selectedAttributes[name] === attr.value ? 'color-button selected' : 'color-button'}
+                                            onClick={() => handleAttributeSelect(name, attr.value)}
+                                            data-testid={`product-attribute-${kebabCaseName}-${attr.displayValue}`} // Use attr.displayValue here
+                                        />
+                                    ))}
                             </div>
                         ) : (
                             attributeValues.map((value, idx) => (
