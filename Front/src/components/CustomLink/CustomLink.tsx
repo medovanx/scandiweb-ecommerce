@@ -31,12 +31,13 @@ const CustomLink: React.FC<CustomLinkProps> = ({ to, children }) => {
     }
 
     return (
-        <span
+        <a
             {...linkProps}
             onClick={handleClick}
+            href={to}
         >
             {children}
-        </span>
+        </a>
     );
 };
 
