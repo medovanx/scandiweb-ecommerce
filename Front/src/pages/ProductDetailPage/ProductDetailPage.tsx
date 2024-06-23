@@ -17,7 +17,7 @@ const ProductDetailPage: React.FC = () => {
         variables: { id: productId },
     });
     const { cartItems, setCartItems } = useCartContext();
-    const [selectedAttributes, setSelectedAttributes] = useState<{ id: string; name: string; value: string }[]>([]);
+    const [selectedAttributes, setSelectedAttributes] = useState<{ id: string; name: string; value: string; selected: boolean }[]>([]);
 
     useEffect(() => {
         console.log("Updated cart items:", cartItems);

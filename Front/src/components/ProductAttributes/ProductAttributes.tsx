@@ -7,14 +7,19 @@ interface ProductAttributesProps {
         name: string;
         value: string;
     }[];
-    setSelectedAttributes: React.Dispatch<React.SetStateAction<{ id: string; name: string; value: string }[]>>
+    setSelectedAttributes: React.Dispatch<React.SetStateAction<{ id: string; name: string; value: string; selected: boolean }[]>>
 }
 
 const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSelectedAttributes }) => {
     const [selectedAttributes, setSelectedAttributesState] = useState<{ [key: string]: string }>({});
 
     useEffect(() => {
-        const selected = attributes.map(attr => ({ id: attr.id, name: attr.name, value: selectedAttributes[attr.name] || '' })).filter(attr => attr.value !== '');
+        const selected = attributes.map(attr => ({
+            id: attr.id,
+            name: attr.name,
+            value: selectedAttributes[attr.name] || '',
+            selected: selectedAttributes[attr.name] === attr.value
+        })).filter(attr => attr.value !== '');
         setSelectedAttributes(selected);
     }, [selectedAttributes, attributes, setSelectedAttributes]);
 
