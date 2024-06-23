@@ -11,6 +11,10 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 }
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+    $r->addRoute('GET', '/', function() {
+        return 'Hello from API'; // Return 'Hello' when accessing root via browser
+    });
+    
     $r->post('/graphql', [App\Controller\GraphQL::class, 'handle']);
 });
 
@@ -46,4 +50,3 @@ switch ($routeInfo[0]) {
         echo call_user_func($handler, $vars);
         break;
 }
-?>
