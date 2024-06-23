@@ -20,6 +20,7 @@ export const PRODUCTS_BY_CATEGORY_QUERY = gql`
         id
         name
         value
+        displayValue
       }
       prices {
         id
@@ -50,6 +51,7 @@ export const PRODUCTS_BY_ID_QUERY = gql`
         id
         name
         value
+        displayValue
       }
       prices {
         id
