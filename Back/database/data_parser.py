@@ -2,6 +2,7 @@ import json
 import mysql.connector
 from mysql.connector import Error
 
+
 def connect():
     """ Connect to MySQL database """
     try:
@@ -17,11 +18,13 @@ def connect():
         print(f"Error: {e}")
         return None
 
+
 def insert_data(connection, query, data):
     cursor = connection.cursor()
     cursor.execute(query, data)
     connection.commit()
     return cursor.lastrowid
+
 
 def main():
     # Read JSON data from file
@@ -48,11 +51,11 @@ def main():
             query = """INSERT INTO products (id, name, in_stock, description, category_id, brand)
                        VALUES (%s, %s, %s, %s, %s, %s)"""
             product_data = (
-                product['id'], 
-                product['name'], 
-                product['inStock'], 
-                product['description'], 
-                categories[product['category']], 
+                product['id'],
+                product['name'],
+                product['inStock'],
+                product['description'],
+                categories[product['category']],
                 product['brand']
             )
             insert_data(connection, query, product_data)
@@ -65,12 +68,13 @@ def main():
             # Insert attributes
             for attribute_set in product['attributes']:
                 for attribute in attribute_set['items']:
-                    query = """INSERT INTO attributes (product_id, attribute_name, attribute_value)
-                               VALUES (%s, %s, %s)"""
+                    query = """INSERT INTO attributes (product_id, attribute_name, attribute_value, display_value)
+                               VALUES (%s, %s, %s, %s)"""
                     attribute_data = (
-                        product['id'], 
-                        attribute_set['name'], 
-                        attribute['value']
+                        product['id'],
+                        attribute_set['name'],
+                        attribute['value'],
+                        attribute['displayValue']
                     )
                     insert_data(connection, query, attribute_data)
 
@@ -79,8 +83,8 @@ def main():
                 query = """INSERT INTO prices (product_id, amount, currency)
                            VALUES (%s, %s, %s)"""
                 price_data = (
-                    product['id'], 
-                    price['amount'], 
+                    product['id'],
+                    price['amount'],
                     price['currency']['label']
                 )
                 insert_data(connection, query, price_data)
@@ -91,6 +95,7 @@ def main():
         if connection.is_connected():
             cursor.close()
             connection.close()
+
 
 if __name__ == "__main__":
     main()

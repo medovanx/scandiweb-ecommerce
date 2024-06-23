@@ -25,6 +25,7 @@ CREATE TABLE attributes (
     product_id VARCHAR(255),
     attribute_name VARCHAR(255),
     attribute_value TEXT,
+    display_value VARCHAR(255),  -- Adding display_value field
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 

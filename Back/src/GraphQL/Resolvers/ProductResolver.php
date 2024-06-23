@@ -22,6 +22,7 @@ class ProductResolver
                     'id' => $attribute->id,
                     'name' => $attribute->attribute_name,
                     'value' => $attribute->attribute_value,
+                    'displayValue' => $attribute->display_value
                 ];
             })->toArray();
             return $product;

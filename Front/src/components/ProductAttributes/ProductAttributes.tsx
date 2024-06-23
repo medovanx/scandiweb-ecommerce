@@ -6,8 +6,14 @@ interface ProductAttributesProps {
         id: string;
         name: string;
         value: string;
+        displayValue: string; // Ensure this property is added
     }[];
-    setSelectedAttributes: React.Dispatch<React.SetStateAction<{ id: string; name: string; value: string; selected: boolean }[]>>
+    setSelectedAttributes: React.Dispatch<React.SetStateAction<{
+        id: string;
+        name: string;
+        value: string;
+        selected: boolean;
+    }[]>>
 }
 
 const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSelectedAttributes }) => {
@@ -33,19 +39,20 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSe
         <div className="product-attributes">
             {uniqueAttributeNames.map((name, index) => {
                 const attributeValues = attributes.filter(attr => attr.name === name).map(attr => attr.value);
-                const kebabCaseName = name.toLowerCase().split(' ').join('-');
+                const kebabCaseName = name.split(' ').join('-');
 
                 return (
-                    <div key={index} className="attribute-selector" data-testid={`product-attribute-${kebabCaseName}`}>
+                    <div key={index} className="attribute-selector">
                         <span>{name.toUpperCase()}:</span>
                         {name.toLowerCase() === 'color' ? (
                             <div className="color-swatches">
-                                {attributeValues.map((value, idx) => (
+                                {attributes.map((attr, idx) => (
                                     <button
                                         key={idx}
-                                        style={{ backgroundColor: value }}
-                                        className={selectedAttributes[name] === value ? 'color-button selected' : 'color-button'}
-                                        onClick={() => handleAttributeSelect(name, value)}
+                                        style={{ backgroundColor: attr.value }}
+                                        className={selectedAttributes[name] === attr.value ? 'color-button selected' : 'color-button'}
+                                        onClick={() => handleAttributeSelect(name, attr.value)}
+                                        data-testid={`product-attribute-${kebabCaseName}-${attr.displayValue}`} // Use attr.displayValue here
                                     />
                                 ))}
                             </div>
@@ -55,6 +62,7 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSe
                                     key={idx}
                                     className={selectedAttributes[name] === value ? 'attribute-button selected' : 'attribute-button'}
                                     onClick={() => handleAttributeSelect(name, value)}
+                                    data-testid={`product-attribute-${kebabCaseName}-${value}`}
                                 >
                                     {value}
                                 </button>

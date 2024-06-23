@@ -12,6 +12,7 @@ class AttributeSchema extends ObjectType {
                 'id' => Type::id(),
                 'name' => Type::string(),
                 'value' => Type::string(),
+                'displayValue' => Type::string(),   
             ]
         ];
         parent::__construct($config);
