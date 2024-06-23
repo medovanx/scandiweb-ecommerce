@@ -128,7 +128,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
 
     return (
         <div className="overlay-bg">
-            <div className="cart-overlay">
+            <div className="cart-overlay" data-testid='cart-overlay'>
                 <div className="cart-overlay-content">
                     <span className="close-btn" onClick={onClose}>&times;</span>
                     <p><span className='main-bag-text'>My Bag</span>, <span className='amount-indicator' data-testid='cart-total'>{cartCount} {cartCount === 1 ? 'item' : 'items'}</span></p>
