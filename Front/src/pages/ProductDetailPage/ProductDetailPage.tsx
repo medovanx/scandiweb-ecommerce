@@ -47,15 +47,15 @@ const ProductDetailPage: React.FC = () => {
                 <ProductAttributes attributes={product.attributes} setSelectedAttributes={setSelectedAttributes} />
                 <h3>PRICE:</h3>
                 <p className="product-price-detail">${product.prices[0].amount.toFixed(2)}</p>
-                {product.in_stock && <button
-                    className={`add-to-cart-button-detail ${!allAttributesSelected() ? 'disabled' : ''}`}
+                <button
+                    className={`add-to-cart-button-detail ${!allAttributesSelected() || !product.in_stock ? 'disabled' : ''}`}
                     onClick={handleAddToCart}
-                    disabled={!allAttributesSelected()}
+                    disabled={!allAttributesSelected() || !product.in_stock}
                     data-testid="add-to-cart"
                 >
                     <BsCart2 size={20} />
                     ADD TO CART
-                </button>}
+                </button>
                 <div className="product-description" data-testid="product-description">
                     {convertChildNodesToReactNodes(parseDescription(product.description))}
                 </div>
