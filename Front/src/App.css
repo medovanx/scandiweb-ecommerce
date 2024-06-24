@@ -46,7 +46,7 @@ a {
   margin: auto;
 }
 
-@keyframes loading-icon {
+@keyframes spin {
   to {
     transform: rotate(360deg);
   }
