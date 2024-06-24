@@ -143,7 +143,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                                         <div className="item-info">
                                             <div className="item-details">
                                                 <h4>{item.name}</h4>
-                                                <p>${item.totalPrice.toFixed(2)}</p> {/* Display totalPrice */}
+                                                <p>$ {item.totalPrice.toFixed(2)}</p> {/* Display totalPrice */}
                                                 {renderAttributes(item)}
                                                 <p data-testid='cart-item-amount'>Quantity: {item.quantity}</p>
                                                 <div className="quantity-btns">
