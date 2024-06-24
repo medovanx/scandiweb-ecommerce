@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './ProductAttributes.css';
+import { Attribute, SelectedAttribute } from '../../types/CartItem';
 
 interface ProductAttributesProps {
-    attributes: {
-        id: string;
-        name: string;
-        value: string;
-        displayValue: string; // Ensure this property is added
-    }[];
-    setSelectedAttributes: React.Dispatch<React.SetStateAction<{
-        id: string;
-        name: string;
-        value: string;
-        selected: boolean;
-    }[]>>
+    attributes: Attribute[];
+    setSelectedAttributes: React.Dispatch<React.SetStateAction<SelectedAttribute[]>>;
 }
 
 const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSelectedAttributes }) => {
@@ -24,6 +15,7 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSe
             id: attr.id,
             name: attr.name,
             value: selectedAttributes[attr.name] || '',
+            displayValue: attr.displayValue,
             selected: selectedAttributes[attr.name] === attr.value
         })).filter(attr => attr.value !== '');
         setSelectedAttributes(selected);
@@ -38,7 +30,7 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSe
     return (
         <div className="product-attributes">
             {uniqueAttributeNames.map((name, index) => {
-                const attributeValues = attributes.filter(attr => attr.name === name).map(attr => attr.value);
+                const attributeValues = attributes.filter(attr => attr.name === name);
                 const kebabCaseName = name.toLowerCase().split(' ').join('-');
 
                 return (
@@ -46,27 +38,25 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({ attributes, setSe
                         <span>{name.toUpperCase()}:</span>
                         {name.toLowerCase() === 'color' ? (
                             <div className="color-swatches">
-                                {attributes
-                                    .filter(attr => attr.name.toLowerCase() === 'color')
-                                    .map((attr, idx) => (
-                                        <button
-                                            key={idx}
-                                            style={{ backgroundColor: attr.value }}
-                                            className={selectedAttributes[name] === attr.value ? 'color-button selected' : 'color-button'}
-                                            onClick={() => handleAttributeSelect(name, attr.value)}
-                                            data-testid={`product-attribute-${kebabCaseName}-${attr.displayValue}`} // Use attr.displayValue here
-                                        />
-                                    ))}
+                                {attributeValues.map((attr, idx) => (
+                                    <button
+                                        key={idx}
+                                        style={{ backgroundColor: attr.value }}
+                                        className={selectedAttributes[name] === attr.value ? 'color-button selected' : 'color-button'}
+                                        onClick={() => handleAttributeSelect(name, attr.value)}
+                                        data-testid={`product-attribute-${kebabCaseName}-${attr.displayValue}`}
+                                    />
+                                ))}
                             </div>
                         ) : (
-                            attributeValues.map((value, idx) => (
+                            attributeValues.map((attr, idx) => (
                                 <button
                                     key={idx}
-                                    className={selectedAttributes[name] === value ? 'attribute-button selected' : 'attribute-button'}
-                                    onClick={() => handleAttributeSelect(name, value)}
-                                    data-testid={`product-attribute-${kebabCaseName}-${value}`}
+                                    className={selectedAttributes[name] === attr.value ? 'attribute-button selected' : 'attribute-button'}
+                                    onClick={() => handleAttributeSelect(name, attr.value)}
+                                    data-testid={`product-attribute-${kebabCaseName}-${attr.displayValue}`}
                                 >
-                                    {value}
+                                    {attr.displayValue}
                                 </button>
                             ))
                         )}

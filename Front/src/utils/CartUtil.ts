@@ -1,4 +1,4 @@
-import { CartItem } from "../types/CartItem";
+import { CartItem, SelectedAttribute } from "../types/CartItem";
 
 interface Product {
     id: string;
@@ -6,26 +6,17 @@ interface Product {
     images: { id: string; url: string }[];
     prices: { id: string; amount: number; currency: string }[];
     in_stock: boolean;
-    attributes: { id: string; name: string; value: string }[];
+    attributes: { id: string; name: string; value: string; displayValue: string }[];
 }
 
 export function addToCart(
     product: Product,
     cartItems: CartItem[],
     setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>,
-    selectedAttributes?: {
-        selected: any; id: string; name: string; value: string
-    }[]
+    selectedAttributes?: SelectedAttribute[]
 ): void {
     const attributesToUse = selectedAttributes ? getSelectedAttributes(product.attributes, selectedAttributes) : getFirstAttributes(product.attributes);
 
-    // Create a map to store selected attribute values
-    const selectedAttributeMap: { [name: string]: string } = {};
-    attributesToUse.forEach(attr => {
-        selectedAttributeMap[attr.name] = attr.value;
-    });
-
-    // Create the identifier with selected attributes
     const identifierParts = [product.id];
     attributesToUse.forEach(attr => {
         if (attr.selected) {
@@ -51,31 +42,28 @@ export function addToCart(
             quantity: 1,
             price: product.prices[0]?.amount || 0,
             totalPrice: product.prices[0]?.amount || 0,
-            attributes: selectedAttributes ?
-                product.attributes.map(attr => {
-                    const selected = selectedAttributes.some(selectedAttr => selectedAttr.name === attr.name && selectedAttr.value === attr.value);
-                    return { ...attr, selected };
-                }) :
-                getFirstAttributes(product.attributes),
-
-            // Rest of the properties
+            attributes: attributesToUse,
             image: product.images[0]?.url
         };
-
-        console.log(newCartItem);
 
         setCartItems([...cartItems, newCartItem]);
     }
 }
-export function getSelectedAttributes(attributes: { id: string; name: string; value: string }[], selectedAttributes: { id: string; name: string; value: string }[]): { id: string; name: string; value: string, selected: boolean }[] {
+
+export function getSelectedAttributes(
+    attributes: { id: string; name: string; value: string; displayValue: string }[],
+    selectedAttributes: { id: string; name: string; value: string; displayValue: string }[]
+): SelectedAttribute[] {
     return attributes.map(attr => {
         const selected = selectedAttributes.some(selectedAttr => selectedAttr.name === attr.name && selectedAttr.value === attr.value);
         return { ...attr, selected };
     });
 }
 
-export function getFirstAttributes(attributes: { id: string; name: string; value: string }[]): { id: string; name: string; value: string, selected: boolean }[] {
-    const firstAttributes: { id: string; name: string; value: string, selected: boolean }[] = [];
+export function getFirstAttributes(
+    attributes: { id: string; name: string; value: string; displayValue: string }[]
+): SelectedAttribute[] {
+    const firstAttributes: SelectedAttribute[] = [];
     const attributeTypes = new Set<string>();
 
     attributes.forEach(attr => {

@@ -10,6 +10,7 @@ import { parseDescription } from '../../utils/parseDescription.ts';
 import { convertChildNodesToReactNodes } from '../../utils/convertChildNodesToReactNodes.tsx';
 import { addToCart } from '../../utils/CartUtil.ts';
 import { useCartContext } from '../../context/CartContext.tsx';
+import { SelectedAttribute } from '../../types/CartItem.ts';
 
 const ProductDetailPage: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -17,7 +18,7 @@ const ProductDetailPage: React.FC = () => {
         variables: { id: productId },
     });
     const { cartItems, setCartItems } = useCartContext();
-    const [selectedAttributes, setSelectedAttributes] = useState<{ id: string; name: string; value: string; selected: boolean }[]>([]);
+    const [selectedAttributes, setSelectedAttributes] = useState<SelectedAttribute[]>([]);
 
     useEffect(() => {
         console.log("Updated cart items:", cartItems);
@@ -47,15 +48,15 @@ const ProductDetailPage: React.FC = () => {
                 <ProductAttributes attributes={product.attributes} setSelectedAttributes={setSelectedAttributes} />
                 <h3>PRICE:</h3>
                 <p className="product-price-detail">${product.prices[0].amount.toFixed(2)}</p>
-                <button
-                    className={`add-to-cart-button-detail ${!allAttributesSelected() || !product.in_stock ? 'disabled' : ''}`}
+                {product.in_stock && <button
+                    className={`add-to-cart-button-detail ${!allAttributesSelected() ? 'disabled' : ''}`}
                     onClick={handleAddToCart}
-                    disabled={!allAttributesSelected() || !product.in_stock}
+                    disabled={!allAttributesSelected()}
                     data-testid="add-to-cart"
                 >
                     <BsCart2 size={20} />
                     ADD TO CART
-                </button>
+                </button>}
                 <div className="product-description" data-testid="product-description">
                     {convertChildNodesToReactNodes(parseDescription(product.description))}
                 </div>

@@ -44,14 +44,14 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                 // Split productId by '|' and take the first part as productId
                 const productId = item.id.split('|')[0].trim();
                 const { quantity } = item;
-
                 // Filter attributes to send only selected ones
                 const selectedAttributes = item.attributes
                     .filter(attr => attr.selected)
                     .map(attr => ({
                         id: attr.id,
                         name: attr.name,
-                        value: attr.value
+                        value: attr.value,
+                        displayValue: attr.displayValue // Ensure displayValue is included
                     }));
 
                 const attributes = JSON.stringify(selectedAttributes); // Convert attributes to string for mutation
@@ -104,7 +104,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                                         key={`${name}-${idx}`}
                                         style={{ backgroundColor: attr.value }}
                                         className={`color-attribute ${attr.selected ? 'selected' : ''}`}
-                                        data-testid={`${attr.selected ? `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}-selected` :
+                                        data-testid={`${attr.selected ? `cart-item-attribute-${name.split(" ").join("-")}-${attr.displayValue}-selected` :
                                             `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}`}`}
 
                                     ></span>
@@ -116,7 +116,7 @@ const CartOverlay: React.FC<CartOverlayProps> = ({ isOpen, onClose }) => {
                                     <span
                                         key={`${name}-${idx}`}
                                         className={`attribute-value-box ${attr.selected ? 'selected-attribute-value-box' : ''}`}
-                                        data-testid={`${attr.selected ? `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}-selected` :
+                                        data-testid={`${attr.selected ? `cart-item-attribute-${name.split(" ").join("-")}-${attr.displayValue}-selected` :
                                             `cart-item-attribute-${name.split(" ").join("-")}-${name.split(" ").join("-")}`}`}
                                     >
                                         {attr.value}
