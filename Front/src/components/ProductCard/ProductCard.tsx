@@ -3,6 +3,7 @@ import { BsCart2 } from "react-icons/bs";
 import { useCartContext } from '../../context/CartContext';
 import { addToCart } from '../../utils/CartUtil'; // Adjust the path based on your project structure
 import { Link } from 'react-router-dom';
+import { Attribute } from '../../types/CartItem';
 
 interface ProductCardProps {
     product: {
@@ -11,7 +12,7 @@ interface ProductCardProps {
         images: { id: string; url: string }[];
         prices: { id: string; amount: number; currency: string }[];
         in_stock: boolean;
-        attributes: { id: string; name: string; value: string }[];
+        attributes: Attribute[];
     };
 }
 
